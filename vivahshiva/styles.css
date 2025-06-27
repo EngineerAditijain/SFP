@@ -329,117 +329,78 @@ h1 {
     stroke-dashoffset: 0;
   }
 }
-
 .about-section {
-  background: #181818;
-  padding: 90px 0 40px 0;
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 50px 20px;
+  text-align: center;
 }
 
 .about-flex {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 60px;
-  max-width: 1300px;
-  margin: 0 auto;
   flex-wrap: wrap;
-  padding-bottom: 48px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 110px;
 }
-
+.about-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  gap: 60px;
+}
 .about-title h2 {
-  color: #fff;
-  font-family: "Playfair Display", sans-serif;
-  font-weight: 700;
-  font-size: 2.8rem;
-  margin: 0;
+  font-size: 3em;
+  font-weight: bold;
   line-height: 1.2;
-  text-align: right;
+  margin: 0;
 }
 
 .about-image {
-  min-width: 330px;
-  width: 340px;
-  height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1;
+  min-width: 200px;
 }
 
 .about-image img {
+  border-radius: 26%;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #ffa886;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-  background: #222;
-  /* Add a slight sepia for retro look if you want: */
-  /* filter: sepia(10%) grayscale(20%); */
+  max-width: 300px;
+  height: auto;
+  box-shadow: 0 0 20px rgba(255, 168, 134, 0.5);
 }
 
 .about-content {
-  color: #eee;
-  font-size: 1.12rem;
-  max-width: 510px;
-  margin: 0;
-  font-family: "Playfair Display", sans-serif;
-  letter-spacing: 0.1px;
+  flex: 2;
+  min-width: 300px;
+  text-align: left;
 }
 
-.about-content b {
-  color: #fff;
+.about-content p {
+  font-size: 1.1em;
+  line-height: 1.6;
 }
 
-.about-content .about-why {
-  margin-top: 18px;
+.about-why {
+  margin-top: 20px;
 }
 
-.about-content ul {
-  list-style: disc inside;
-  color: #fff;
-  margin: 7px 0 0 0;
-  padding-left: 20px;
+.about-why b {
+  font-size: 1.2em;
 }
 
-.about-content li {
-  margin-bottom: 6px;
-  font-size: 1.05rem;
+.about-why ul {
+  list-style: none;
+  padding: 0;
 }
 
-.about-stats {
-  margin: 70px auto 0 auto;
-  max-width: 1000px;
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-
-.about-stat {
-  text-align: center;
-  min-width: 220px;
-}
-
-.stat-number {
-  font-size: 3.3rem;
-  font-weight: 800;
-  color: #fff;
-  font-family: "Playfair Display", sans-serif;
-  display: inline-block;
-}
-
-.stat-label {
-  margin-top: 9px;
-  color: #ffa886;
-  font-size: 1.15rem;
-  font-family: "Playfair Display", sans-serif;
-}
-
-.stat-label .star {
-  color: #ffa886;
-  font-size: 1.23rem;
-  vertical-align: -2px;
+.about-why li {
+  font-size: 1em;
+  margin: 10px 0;
+  color: #ccc;
 }
 
 @media (max-width: 1200px) {
@@ -463,7 +424,8 @@ h1 {
 @media (max-width: 700px) {
   .about-flex {
     padding: 0 6vw 32px 6vw;
-    gap: 16px;
+    gap: 50px;
+    flex-direction: column;
   }
 
   .about-content {
@@ -540,6 +502,7 @@ h1 {
   font-weight: 400;
   max-width: 900px;
   margin: 0 auto 12px auto;
+  text-align: justify;
 }
 
 .gallery-carousel {
@@ -584,7 +547,12 @@ h1 {
   }
 
   .gallery-header h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    padding: 0 4vw 16px 4vw;
+  }
+  .gallery-header p {
+    max-width: 98vw;
+    padding: 0 4vw 16px 4vw;
   }
 }
 
@@ -628,21 +596,26 @@ h1 {
 
   .about-title h2 {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin-bottom: 7px;
   }
 
   .about-image {
-    width: 120px !important;
-    height: 120px !important;
+    width: 100% !important;
+
     min-width: 80px !important;
     margin: 0 auto;
+  }
+  .about-wrapper {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
   }
 
   .about-content {
     max-width: 98vw;
     font-size: 1rem;
-    text-align: center;
+    text-align: justify; /* Use this for justification */
     margin: 0 auto;
   }
 }
@@ -672,8 +645,8 @@ h1 {
 
 @media (max-width: 900px) {
   .gallery-header h2 {
-    font-size: 1.1rem;
-    padding: 0 2vw;
+    font-size: 2rem;
+    text-align: center;
   }
 
   .carousel-img {
@@ -691,7 +664,7 @@ h1 {
   .carousel-img {
     min-width: 96vw !important;
     max-width: 98vw !important;
-    height: 60vh !important;
+    height: 50vh !important;
   }
 }
 
@@ -983,6 +956,7 @@ h1 {
   color: #ececec;
   font-size: 1.11rem;
   margin-bottom: 0;
+  text-align: justify;
 }
 
 .expertise-cards {
@@ -1130,10 +1104,16 @@ h1 {
 
 @media (max-width: 500px) {
   .expertise-header h2 {
-    font-size: 1.35rem;
+    font-size: 2rem;
+    padding: 0 4vw 16px 4vw;
+  }
+  .expertise-header p {
+    padding: 0 4vw 16px 4vw;
+    text-align: justify;
   }
   .reviews-info h2 {
-    font-size: 1.35rem;
+    font-size: 2rem;
+    padding: 0 4vw 16px 4vw;
   }
   .expertise-card {
     min-width: 85vw;
@@ -1217,6 +1197,7 @@ h1 {
   font-size: 1.12rem;
   margin-top: 0;
   color: #ffe;
+  text-align: justify;
 }
 .reviews-carousel {
   flex: 2;
@@ -1293,12 +1274,13 @@ h1 {
     font-size: 1.35rem;
   }
   .reviews-info h2 {
-    font-size: 1.35rem;
+    font-size: 2rem;
   }
 }
 @media (max-width: 1200px) {
   .reviews-container {
     gap: 24px;
+    padding: 0 4vw 40px 4vw;
   }
   .review-card {
     width: 260px;
@@ -1338,6 +1320,7 @@ h1 {
   }
   .reviews-info p {
     text-align: center;
+    padding: 0 4vw 16px 4vw;
   }
   .reviews-cards {
     gap: 28px;
@@ -1352,10 +1335,10 @@ h1 {
     gap: 20px;
     align-items: center;
   }
-  .review-text{
+  .review-text {
     text-align: center;
   }
-  .reviews-carousel{
+  .reviews-carousel {
     margin-left: 10vw;
   }
 }
@@ -1366,6 +1349,7 @@ h1 {
   }
   .reviews-info p {
     padding: 0 28px;
+    padding: 0 4vw 16px 4vw;
   }
   .review-card {
     width: 200px;
@@ -1383,7 +1367,7 @@ h1 {
   .review-rating {
     font-size: 1rem;
   }
-  .reviews-carousel{
+  .reviews-carousel {
     width: 200px;
     min-width: 200px;
     max-width: 200px;
