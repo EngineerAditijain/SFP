@@ -4,18 +4,14 @@ document.addEventListener('DOMContentLoaded', function () {
         'images/bg/1.jpg',
         'images/bg/2.jpg',
         'images/bg/3.jpg',
-        // Replace with your wedding images
     ];
     let currentIndex = 0;
     const heroBg = document.querySelector('.hero-bg');
     if (heroBg) {
         function setBg(idx) {
             heroBg.style.backgroundImage = `url('${bgImages[idx]}')`;
-            heroBg.classList.remove('zoom');
-            // Re-trigger zoom animation
-            setTimeout(() => {
-                heroBg.classList.add('zoom');
-            }, 50);
+
+
         }
 
         // Initial setup
@@ -176,30 +172,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-  const track = document.getElementById("carouselTrack");
-  const carousel = document.querySelector(".reviews-carousel");
-  let cards = Array.from(track.children);
-  let perPage = 2; // Default to 2 cards
-  let cardWidth = 0; // Will be calculated
-  let page = 0;
+    const track = document.getElementById("carouselTrack");
+    const carousel = document.querySelector(".reviews-carousel");
+    let cards = Array.from(track.children);
+    let perPage = 2; // Default to 2 cards
+    let cardWidth = 0; // Will be calculated
+    let page = 0;
 
-  function updateVars() {
-    cards = Array.from(track.children).filter(card => !card.classList.contains('clone'));
-    perPage = window.innerWidth < 700 ? 1 : 2;
-    cardWidth = cards[0].offsetWidth + parseInt(getComputedStyle(track).gap || 28);
-    // Set carousel container width to fit exactly perPage cards
-    carousel.style.maxWidth = `${cardWidth * perPage}px`;
-    carousel.style.width = `${cardWidth * perPage}px`;
-  }
-
-  function cloneSlides() {
-    Array.from(track.querySelectorAll('.clone')).forEach(el => el.remove());
-    for (let i = 0; i < perPage; i++) {
-      let clone = cards[i % cards.length].cloneNode(true); // Ensure enough clones
-      clone.classList.add('clone');
-      track.appendChild(clone);
+    function updateVars() {
+        cards = Array.from(track.children).filter(card => !card.classList.contains('clone'));
+        perPage = window.innerWidth < 700 ? 1 : 2;
+        cardWidth = cards[0].offsetWidth + parseInt(getComputedStyle(track).gap || 28);
+        // Set carousel container width to fit exactly perPage cards
+        carousel.style.maxWidth = `${cardWidth * perPage}px`;
+        carousel.style.width = `${cardWidth * perPage}px`;
     }
-  }
+
+    function cloneSlides() {
+        Array.from(track.querySelectorAll('.clone')).forEach(el => el.remove());
+        for (let i = 0; i < perPage; i++) {
+            let clone = cards[i % cards.length].cloneNode(true); // Ensure enough clones
+            clone.classList.add('clone');
+            track.appendChild(clone);
+        }
+    }
 
     function slideTo(pg, animate = true) {
         updateVars();
@@ -208,26 +204,26 @@ document.addEventListener("DOMContentLoaded", function () {
         track.style.transform = `translateX(-${pg * cardWidth}px)`;
     }
 
-  let intervalId;
-  function startCarousel() {
-    intervalId = setInterval(() => {
-      updateVars();
-      let maxPage = cards.length;
-      page++;
-      slideTo(page, true);
-      if (page >= maxPage) {
-        setTimeout(() => {
-          track.style.transition = 'none';
-          page = 0;
-          slideTo(page, false);
-        }, 550); // Match transition duration
-      }
-    }, 3500);
-  }
+    let intervalId;
+    function startCarousel() {
+        intervalId = setInterval(() => {
+            updateVars();
+            let maxPage = cards.length;
+            page++;
+            slideTo(page, true);
+            if (page >= maxPage) {
+                setTimeout(() => {
+                    track.style.transition = 'none';
+                    page = 0;
+                    slideTo(page, false);
+                }, 550); // Match transition duration
+            }
+        }, 3500);
+    }
 
-  function stopCarousel() {
-    clearInterval(intervalId);
-  }
+    function stopCarousel() {
+        clearInterval(intervalId);
+    }
 
     window.addEventListener("resize", function () {
         stopCarousel();
@@ -237,15 +233,15 @@ document.addEventListener("DOMContentLoaded", function () {
         startCarousel();
     });
 
-  // Pause on hover
-  track.addEventListener('mouseenter', stopCarousel);
-  track.addEventListener('mouseleave', startCarousel);
+    // Pause on hover
+    track.addEventListener('mouseenter', stopCarousel);
+    track.addEventListener('mouseleave', startCarousel);
 
-  // Initialize
-  updateVars();
-  cloneSlides();
-  slideTo(page, false);
-  startCarousel();
+    // Initialize
+    updateVars();
+    cloneSlides();
+    slideTo(page, false);
+    startCarousel();
 });
 
 document.getElementById('quoteForm').addEventListener('submit', function (e) {

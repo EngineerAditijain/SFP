@@ -27,7 +27,7 @@ header {
   width: 100%;
   top: 0;
   z-index: 10;
-  bottom: 30;
+
   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
 }
 
@@ -82,39 +82,41 @@ header {
 }
 
 /* Hero section */
+
 .hero {
-  height: 100dvh;
-  width: 100dvw;
+  height: 130vh;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: #181818;
+  margin: 0;
+  /* background: #181818; */
 }
-
-.hero {
-  position: relative;
-  width: 100vw;
-  height: 100dvh; /* Key fix for mobile */
-  overflow: hidden;
-}
-
 .hero-bg {
   position: absolute;
+  /* background-color: white; */
   inset: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
+  background-size: cover; /* Show full image */
+  background-position: top; /* Center the image */
   filter: brightness(0.85);
   z-index: 0;
-  transition: background-image 1s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: background-image, transform;
-  transform: scale(1.06);
+  transition: background-image 5s ease-in-out;
+  will-change: transform, opacity;
+  transform-origin: center;
+  /* animation: shrink 5s infinite alternate; */
 }
-
+/* @keyframes shrink {
+  0% {
+    background-size: 110% 110%;
+  }
+  100% {
+    background-size: 100% 100%;
+  }
+} */
 .hero-content {
   position: relative;
   z-index: 3;
@@ -122,9 +124,18 @@ header {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  top: 100px;
+  padding-top: 20px;
 }
-
+.hero-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  height: 40px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(24, 24, 24, 0) 0%, #181818 100%);
+}
 @media (max-width: 768px) {
   .hero {
     width: 100vw;
@@ -139,7 +150,7 @@ header {
   }
 }
 
-.hero-bg.zoom {
+.hero-bg {
   transform: scale(1.12);
 }
 
@@ -451,18 +462,6 @@ h1 {
   .stat-number {
     font-size: 2.2rem;
   }
-}
-
-.hero-fade {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 130px;
-  /* You can adjust this */
-  z-index: 3;
-  pointer-events: none;
-  background: linear-gradient(to bottom, rgba(24, 24, 24, 0) 0%, #181818 100%);
 }
 
 .gallery-section {
