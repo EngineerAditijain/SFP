@@ -1,28 +1,50 @@
-// Rotating Background Images with Zoom Effect
 document.addEventListener('DOMContentLoaded', function () {
     const bgImages = [
         'images/bg/1.jpg',
         'images/bg/2.jpg',
         'images/bg/3.jpg',
+        'images/bg/4.jpg',
+        'images/bg/5.jpg',
+        'images/bg/6.jpg',
+        'images/bg/7.jpg',
     ];
+
     let currentIndex = 0;
-    const heroBg = document.querySelector('.hero-bg');
-    if (heroBg) {
-        function setBg(idx) {
-            heroBg.style.backgroundImage = `url('${bgImages[idx]}')`;
+    const bg1 = document.querySelector('.bg1');
+    const bg2 = document.querySelector('.bg2');
+    let isBg1Active = true;
 
+    // ✅ Initial setup with a small delay to allow CSS transitions to register
+    bg1.style.backgroundImage = `url('${bgImages[0]}')`;
+    requestAnimationFrame(() => {
+        bg1.classList.add('active');
+        // Ensure the "zoom" transition triggers after initial render
+        setTimeout(() => {
+            bg1.classList.add('zoom');
+        }, 50);
+    });
 
-        }
+    function setNextBackground(index) {
+        const nextImg = bgImages[index];
+        const activeBg = isBg1Active ? bg1 : bg2;
+        const inactiveBg = isBg1Active ? bg2 : bg1;
 
-        // Initial setup
-        setBg(currentIndex);
+        inactiveBg.style.backgroundImage = `url('${nextImg}')`;
+        inactiveBg.classList.add('active');
+        // trigger zoom separately for transition effect
+        setTimeout(() => {
+            inactiveBg.classList.add('zoom');
+        }, 50);
 
-        // Background image change every 7.5s
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % bgImages.length;
-            setBg(currentIndex);
-        }, 7500);
+        activeBg.classList.remove('active', 'zoom');
+        isBg1Active = !isBg1Active;
     }
+
+    // Change background every 7.5s
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % bgImages.length;
+        setNextBackground(currentIndex);
+    }, 7500);
 
 
 
@@ -70,58 +92,91 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-// Animated number increment when in view
 function animateCount(el, target, duration) {
     let start = 0;
-    let end = parseFloat(target);
-    let decimalPlaces = (target % 1 !== 0) ? 1 : 0;
-    let range = end - start;
-    let startTime = null;
+    const end = parseFloat(target);
+    const decimalPlaces = String(target).includes('.') ? 1 : 0;
+    const range = end - start;
+    const startTime = performance.now();
 
-    function animate(currentTime) {
-        if (!startTime) startTime = currentTime;
-        let progress = Math.min((currentTime - startTime) / duration, 1);
-        let value = start + range * progress;
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = start + range * progress;
         el.textContent = value.toFixed(decimalPlaces);
         if (progress < 1) {
-            requestAnimationFrame(animate);
+            requestAnimationFrame(update);
         } else {
             el.textContent = end.toFixed(decimalPlaces);
         }
     }
-    requestAnimationFrame(animate);
+
+    requestAnimationFrame(update);
 }
 
-// Detect when .about-stats is in viewport
-function isInViewport(el) {
-    const rect = el.getBoundingClientRect();
-    return (
-        rect.top < window.innerHeight - 50 &&
-        rect.bottom > 0
-    );
+function animateCount(el, target, duration = 1200) {
+    let start = 0;
+    const end = parseFloat(target);
+    const decimalPlaces = target.includes('.') ? 1 : 0;
+    const range = end - start;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = start + range * progress;
+        el.textContent = value.toFixed(decimalPlaces);
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            el.textContent = end.toFixed(decimalPlaces);
+        }
+    }
+
+    requestAnimationFrame(update);
 }
 
-let statsAnimated = false;
-window.addEventListener('scroll', function () {
-    const statsSection = document.querySelector('.about-stats');
-    if (statsSection && !statsAnimated && isInViewport(statsSection)) {
-        statsAnimated = true;
-        document.querySelectorAll('.stat-number').forEach(el => {
-            animateCount(el, el.getAttribute('data-target'), 1200);
+document.addEventListener('DOMContentLoaded', () => {
+    const statNumbers = document.querySelectorAll('.stat-number');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = el.getAttribute('data-target');
+                animateCount(el, target);
+                observer.unobserve(el); // only once
+            }
         });
-    }
+    }, {
+        threshold: 0.5 // trigger when 50% visible
+    });
+
+    statNumbers.forEach(el => observer.observe(el));
 });
-// In case stats are in view on first load
-window.addEventListener('DOMContentLoaded', function () {
-    const statsSection = document.querySelector('.about-stats');
-    if (statsSection && isInViewport(statsSection)) {
-        statsAnimated = true;
-        document.querySelectorAll('.stat-number').forEach(el => {
-            animateCount(el, el.getAttribute('data-target'), 1200);
-        });
-    }
-});
+
+
+
+
+// window.addEventListener('scroll', function () {
+//     const statsSection = document.querySelector('.about-stats');
+//     if (statsSection && !statsAnimated && isInViewport(statsSection)) {
+//         statsAnimated = true;
+//         document.querySelectorAll('.stat-number').forEach(el => {
+//             animateCount(el, el.getAttribute('data-target'), 1200);
+//         });
+//     }
+// });
+// // In case stats are in view on first load
+// window.addEventListener('DOMContentLoaded', function () {
+//     const statsSection = document.querySelector('.about-stats');
+//     if (statsSection && isInViewport(statsSection)) {
+//         statsAnimated = true;
+//         document.querySelectorAll('.stat-number').forEach(el => {
+//             animateCount(el, el.getAttribute('data-target'), 1200);
+//         });
+//     }
+// });
 
 // Simple auto-scroll carousel (looping, smooth swipe-like movement)
 document.addEventListener("DOMContentLoaded", function () {
