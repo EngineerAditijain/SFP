@@ -990,11 +990,10 @@ h1 {
     /* transform: rotate(180deg); */
     height: 50px;
   }
-  .shape-divider path {
-    fill: #181818; /* ✅ semi-transparent for folded edge effect */
-  }
-  .video-art-section {
-    background: #181818;
+  .video-art-bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: none;
   }
 }
 
