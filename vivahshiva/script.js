@@ -180,31 +180,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Simple auto-scroll carousel (looping, smooth swipe-like movement)
 document.addEventListener("DOMContentLoaded", function () {
-    const carousel = document.getElementById('galleryCarousel');
+    const carousel = document.getElementById("galleryCarousel");
     if (!carousel) return;
 
-    // Clone images to allow seamless infinite scroll
     const slides = Array.from(carousel.children);
+
+    // Clone slides for seamless looping
     slides.forEach(slide => carousel.appendChild(slide.cloneNode(true)));
 
-    let scrollPos = 0;
-    const slideWidth = slides[0].offsetWidth + 18; // 18px gap
-    let autoScroll;
+    let currentIndex = 0;
+    const slideWidth = slides[0].offsetWidth + 18;
+    const totalSlides = slides.length;
 
-    function scrollCarousel() {
-        scrollPos += 2; // speed, px/frame
-        if (scrollPos >= slideWidth * slides.length) {
-            scrollPos = 0;
+    let intervalId;
+
+    function slideOnce() {
+        currentIndex++;
+
+        if (currentIndex >= totalSlides) {
+            carousel.style.transition = 'none';
+            carousel.style.transform = `translateX(0px)`;
+            currentIndex = 1;
+
+            void carousel.offsetWidth;
+
+            carousel.style.transition = 'transform 0.5s ease-in-out';
+            carousel.style.transform = `translateX(-${slideWidth}px)`;
+        } else {
+            carousel.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
         }
-        carousel.style.transform = `translateX(${-scrollPos}px)`;
-        autoScroll = requestAnimationFrame(scrollCarousel);
     }
-    scrollCarousel();
 
-    // Optional: Pause on hover
-    carousel.addEventListener('mouseenter', () => cancelAnimationFrame(autoScroll));
-    carousel.addEventListener('mouseleave', () => scrollCarousel());
+    function startAutoSlide() {
+        intervalId = setInterval(slideOnce, 2000); // 🔥 Slide every 1.2s
+    }
+
+    function stopAutoSlide() {
+        clearInterval(intervalId);
+    }
+
+    // Start auto sliding
+    startAutoSlide();
+
+    // Pause/resume on hover
+    carousel.addEventListener('mouseenter', stopAutoSlide);
+    carousel.addEventListener('mouseleave', startAutoSlide);
 });
+
+
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {

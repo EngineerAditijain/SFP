@@ -565,6 +565,12 @@ h1 {
   margin-bottom: 16px;
   letter-spacing: 1.5px;
 }
+#galleryCarousel {
+  display: flex;
+  gap: 18px;
+  transition: transform 0.6s ease-in-out; /* smooth sliding */
+  will-change: transform;
+}
 
 .gallery-header p {
   color: #f0f0f0;
@@ -586,33 +592,73 @@ h1 {
 .carousel-img {
   min-width: 330px;
   max-width: 380px;
-  height: 420px;
+  height: 500px;
+  width: 375px;
   background: #181818;
-  border-radius: 8px;
+  border-radius: 0px;
   overflow: hidden;
   flex: 0 0 auto;
   box-shadow: 0 2px 22px 0 rgba(0, 0, 0, 0.11);
   transition: box-shadow 0.18s;
   position: relative;
+  perspective: 1000px;
 }
 
 .carousel-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top;
   display: block;
-  transition: filter 0.2s;
+  transition: transform 0.6s ease, filter 0.4s ease;
+  transform-style: preserve-3d;
+  filter: brightness(0.8);
 }
 
 .carousel-img:hover img {
-  filter: brightness(1.1) saturate(1.15);
+  transform: scale(1.05) rotateY(4deg) rotateX(2deg) translateZ(10px);
+  filter: brightness(1) saturate(1.15);
+}
+
+.hover-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0) 40%,
+    rgb(209, 152, 118) 100%
+  );
+
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.carousel-img:hover .hover-overlay {
+  opacity: 1;
+}
+
+.hover-overlay h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.hover-overlay p {
+  font-size: 0.95rem;
+  margin-top: 5px;
 }
 
 @media (max-width: 950px) {
   .carousel-img {
     min-width: 240px;
     max-width: 98vw;
-    height: 260px;
+    height: 500px;
   }
 
   .gallery-header h2 {
@@ -723,7 +769,6 @@ h1 {
   .carousel-img {
     min-width: 80vw !important;
     max-width: 94vw !important;
-    height: 38vw !important;
   }
 
   .gallery-header {
@@ -735,7 +780,6 @@ h1 {
   .carousel-img {
     min-width: 96vw !important;
     max-width: 98vw !important;
-    height: 50vh !important;
   }
 }
 
