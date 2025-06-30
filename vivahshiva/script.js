@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
         'images/bg/5.jpg',
         'images/bg/6.jpg',
         'images/bg/7.jpg',
+        'images/bg/8.jpg',
+        'images/bg/9.jpg',
     ];
 
     let currentIndex = 0;
@@ -14,33 +16,51 @@ document.addEventListener('DOMContentLoaded', function () {
     const bg2 = document.querySelector('.bg2');
     let isBg1Active = true;
 
-    // ✅ Initial setup with a small delay to allow CSS transitions to register
-    bg1.style.backgroundImage = `url('${bgImages[0]}')`;
-    requestAnimationFrame(() => {
+    function forceZoomAfterRender(element) {
+        element.classList.remove('zoom');
+        requestAnimationFrame(() => {
+            void element.offsetWidth;
+            element.classList.add('zoom');
+        });
+    }
+
+    // Load first image
+    const imgFirst = new Image();
+    imgFirst.src = bgImages[0];
+    imgFirst.onload = () => {
+        bg1.style.backgroundImage = `url('${bgImages[0]}')`;
+
+        // 1. Set base transform explicitly
+        bg1.style.transform = 'scale(1) translate3d(0, 0, 0)';
+
+        // 2. Fade in
         bg1.classList.add('active');
-        // Ensure the "zoom" transition triggers after initial render
-        setTimeout(() => {
-            bg1.classList.add('zoom');
-        }, 50);
-    });
+
+        // 3. Wait for next frame THEN apply zoom class
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                bg1.classList.add('zoom');
+            });
+        });
+    };
 
     function setNextBackground(index) {
         const nextImg = bgImages[index];
         const activeBg = isBg1Active ? bg1 : bg2;
         const inactiveBg = isBg1Active ? bg2 : bg1;
 
-        inactiveBg.style.backgroundImage = `url('${nextImg}')`;
-        inactiveBg.classList.add('active');
-        // trigger zoom separately for transition effect
-        setTimeout(() => {
-            inactiveBg.classList.add('zoom');
-        }, 50);
+        const img = new Image();
+        img.src = nextImg;
+        img.onload = () => {
+            inactiveBg.style.backgroundImage = `url('${nextImg}')`;
+            inactiveBg.classList.add('active');
+            forceZoomAfterRender(inactiveBg);
 
-        activeBg.classList.remove('active', 'zoom');
-        isBg1Active = !isBg1Active;
+            activeBg.classList.remove('active', 'zoom');
+            isBg1Active = !isBg1Active;
+        };
     }
 
-    // Change background every 7.5s
     setInterval(() => {
         currentIndex = (currentIndex + 1) % bgImages.length;
         setNextBackground(currentIndex);
@@ -227,7 +247,22 @@ document.addEventListener("DOMContentLoaded", function () {
     carousel.addEventListener('mouseleave', startAutoSlide);
 });
 
+function updateAboutTitle() {
+    const h2 = document.querySelector('.about-title h2');
+    if (!h2) return;
 
+    if (window.innerWidth >= 768) {
+        h2.innerHTML = 'More <br/> about <br/> us.';
+    } else {
+        h2.innerText = 'More about us.';
+    }
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', updateAboutTitle);
+
+// Run on window resize
+window.addEventListener('resize', updateAboutTitle);
 
 
 
