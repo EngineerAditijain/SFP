@@ -205,7 +205,7 @@ header {
     top: 0px;
   }
   .hero-bg {
-    background-position: center;
+    background-position: top;
     height: 130vh;
     transform: scale(1) translate3d(0, 0, 0);
   }
