@@ -171,6 +171,11 @@ header {
     flex-direction: column;
     top: 0px;
   }
+  .hero-bg {
+    background-position: center;
+    height: 130vh;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
 }
 
 .hero-overlay {
@@ -289,6 +294,7 @@ h1 {
   background-color: black;
   transition: background 0.2s;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
 }
 
 .cta-btn:hover {
@@ -403,7 +409,8 @@ h1 {
   width: 100%;
   max-width: 357px;
   height: 500px;
-  box-shadow: 0 0 20px rgba(255, 168, 134, 0.5);
+  border: 2px solid rgba(255, 168, 134, 0.5);
+  /* box-shadow: 0 0 20px rgba(255, 168, 134, 0.5); */
 }
 
 .about-content {
@@ -499,7 +506,7 @@ h1 {
 
 @media (max-width: 700px) {
   .about-flex {
-    padding: 0 6vw 32px 6vw;
+    /* padding: 0 6vw 32px 6vw; */
     gap: 50px;
     flex-direction: column;
   }
@@ -508,7 +515,12 @@ h1 {
     font-size: 1rem;
     max-width: 95vw;
   }
-
+  .about-title h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-left: 10px;
+  }
   .about-stats {
     flex-direction: column;
     gap: 30px;
@@ -519,14 +531,12 @@ h1 {
   }
 
   .about-image {
-    width: 160px;
-    height: 120px;
+    /* width: 160px; */
+    /* height: 120px; */
     min-width: 110px;
-    border-radius: 50%;
   }
   .about-image img {
-    border-radius: 50%;
-    height: 350px;
+    height: 400px;
   }
 
   .stat-number {
@@ -552,7 +562,7 @@ h1 {
 
 .gallery-header {
   margin: 0 auto 18px auto;
-  text-align: justify;
+  text-align: left;
   margin-left: auto;
   justify-content: center;
   display: flex;
@@ -582,7 +592,7 @@ h1 {
   font-size: 1.1rem;
   font-weight: 400;
   margin: 0 auto 12px auto;
-  text-align: justify;
+  text-align: left;
 }
 
 .gallery-carousel {
@@ -617,7 +627,7 @@ h1 {
   display: block;
   transition: transform 0.6s ease, filter 0.4s ease;
   transform-style: preserve-3d;
-  filter: brightness(0.8);
+  filter: brightness(0.5);
 }
 
 .carousel-img:hover img {
@@ -684,6 +694,15 @@ h1 {
     padding: 0 2vw;
     gap: 2px;
   }
+  #galleryCarousel {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  #galleryCarousel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
 
   .logo img {
     height: auto;
@@ -712,13 +731,13 @@ h1 {
     flex-direction: column;
     align-items: center;
     gap: 16px;
-    padding: 0 4vw 16px 4vw;
   }
 
   .about-title h2 {
-    text-align: center;
+    text-align: left;
     font-size: 2rem;
     margin-bottom: 7px;
+    width: 100% !important;
   }
 
   .about-image {
@@ -730,13 +749,16 @@ h1 {
   .about-wrapper {
     flex-direction: column;
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    height: auto;
   }
 
   .about-content {
     max-width: 98vw;
     font-size: 1rem;
-    text-align: justify; /* Use this for justification */
+    text-align: left; /* Use this for justification */
     margin: 0 auto;
   }
 }
@@ -768,7 +790,7 @@ h1 {
 @media (max-width: 900px) {
   .gallery-header h2 {
     font-size: 2rem;
-    text-align: center;
+    text-align: left;
   }
 
   .carousel-img {
@@ -1077,7 +1099,7 @@ h1 {
   justify-content: start;
   display: flex;
   flex-direction: column;
-  text-align: justify;
+  text-align: left;
 }
 .expertise-header span {
   color: #fff6e3;
@@ -1086,7 +1108,7 @@ h1 {
   color: #ececec;
   font-size: 1.11rem;
   margin-bottom: 0;
-  text-align: justify;
+  text-align: left;
 }
 
 .expertise-cards {
@@ -1253,7 +1275,7 @@ h1 {
   }
   .expertise-header p {
     padding: 0 4vw 16px 4vw;
-    text-align: justify;
+    text-align: left;
   }
   .reviews-info h2 {
     font-size: 2rem;
@@ -1342,7 +1364,7 @@ h1 {
   font-size: 1.12rem;
   margin-top: 0;
   color: #ffe;
-  text-align: justify;
+  text-align: left;
 }
 .reviews-carousel {
   flex: 2;
@@ -1423,9 +1445,6 @@ h1 {
 }
 
 @media (max-width: 500px) {
-  .expertise-header h2 {
-    font-size: 1.35rem;
-  }
   .reviews-info h2 {
     font-size: 2rem;
   }
@@ -1469,11 +1488,11 @@ h1 {
   }
   .reviews-info h2 {
     font-size: 2rem;
-    text-align: center;
+    text-align: left;
   }
   .reviews-info p {
-    text-align: center;
-    padding: 0 4vw 16px 4vw;
+    text-align: left;
+    /* padding: 0 4vw 16px 4vw; */
   }
   .reviews-cards {
     gap: 28px;
@@ -1497,9 +1516,6 @@ h1 {
 }
 
 @media (max-width: 500px) {
-  .reviews-info h2 {
-    padding: 0 32px;
-  }
   .reviews-info p {
     padding: 0 28px;
     padding: 0 4vw 16px 4vw;
@@ -1534,10 +1550,9 @@ h1 {
   min-height: 520px;
 }
 .contact-flex {
-  max-width: 1320px;
   margin: 0 auto;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 38px;
   justify-content: space-evenly;
   padding: 36px 0 60px 0;
@@ -1545,9 +1560,8 @@ h1 {
   z-index: 5;
 }
 .contact-left {
-  flex: 1.2;
   min-width: 340px;
-  max-width: 520px;
+  /* max-width: 520px; */
 }
 .contact-left h2 {
   font-size: 2.7rem;
@@ -1558,7 +1572,7 @@ h1 {
 }
 .contact-map {
   width: 100%;
-  max-width: 410px;
+  /* max-width: 410px; */
   height: 220px;
   border-radius: 9px;
   margin: 20px 0 0 0;
@@ -1698,6 +1712,7 @@ h1 {
     font-size: 0.98rem;
     padding: 13px 10px;
     border-radius: 13px;
+    width: fit-content;
   }
   .contact-form {
     padding: 15px 8px 15px 8px;

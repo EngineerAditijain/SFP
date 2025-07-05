@@ -203,6 +203,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const carousel = document.getElementById("galleryCarousel");
     if (!carousel) return;
 
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
+    if (!isDesktop) {
+        // On phones: make carousel manually scrollable
+        carousel.style.overflowX = "auto";
+        carousel.style.display = "flex";
+        carousel.style.scrollSnapType = "x mandatory";
+        Array.from(carousel.children).forEach((slide) => {
+            slide.style.scrollSnapAlign = "start";
+            slide.style.flex = "0 0 auto";
+        });
+        return; // Do NOT proceed with auto-scroll on phones
+    }
+
+    // Desktop: Enable auto-scrolling
     const slides = Array.from(carousel.children);
 
     // Clone slides for seamless looping
@@ -222,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
             carousel.style.transform = `translateX(0px)`;
             currentIndex = 1;
 
+            // Force reflow to allow transition to work again
             void carousel.offsetWidth;
 
             carousel.style.transition = 'transform 0.5s ease-in-out';
@@ -232,20 +248,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function startAutoSlide() {
-        intervalId = setInterval(slideOnce, 2000); // 🔥 Slide every 1.2s
+        intervalId = setInterval(slideOnce, 2000);
     }
 
     function stopAutoSlide() {
         clearInterval(intervalId);
     }
 
-    // Start auto sliding
     startAutoSlide();
 
-    // Pause/resume on hover
     carousel.addEventListener('mouseenter', stopAutoSlide);
     carousel.addEventListener('mouseleave', startAutoSlide);
 });
+
 
 function updateAboutTitle() {
     const h2 = document.querySelector('.about-title h2');
