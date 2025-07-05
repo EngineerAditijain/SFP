@@ -52,11 +52,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const img = new Image();
         img.src = nextImg;
         img.onload = () => {
+            // Set next image
             inactiveBg.style.backgroundImage = `url('${nextImg}')`;
+
+            // Prepare fade in
             inactiveBg.classList.add('active');
             forceZoomAfterRender(inactiveBg);
 
+            // Fade out current
             activeBg.classList.remove('active', 'zoom');
+
+            // Swap flags
             isBg1Active = !isBg1Active;
         };
     }

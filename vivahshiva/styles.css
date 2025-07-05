@@ -122,6 +122,39 @@ header {
   z-index: 0;
   transform: scale(1) translate3d(0, 0, 0);
 }
+.bg1,
+.bg2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: top;
+  transition: opacity 1.5s ease-in-out;
+  opacity: 0;
+  z-index: 1;
+}
+
+.bg1.active,
+.bg2.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.bg1.zoom,
+.bg2.zoom {
+  animation: zoomEffect 7.5s ease-in-out forwards; /* ⬅️ changed from 14s to 7.5s */
+}
+
+@keyframes zoomEffect {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.07);
+  }
+}
 
 .hero-bg.zoom {
   transform: scale(1.06) translate3d(0, 0, 0);
@@ -1324,10 +1357,28 @@ h1 {
   background: #181818;
   position: relative;
   overflow: hidden;
-  margin-top: 120px;
-  margin-bottom: 80px;
+  margin-top: 80px;
   /* left: 80px; */
 }
+
+.elementor-shape-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg); /* Flip if needed */
+}
+.elementor-shape-top svg {
+  display: block;
+  width: 100%;
+  height: 100px;
+}
+.elementor-shape-fill {
+  fill: currentColor;
+}
+
 /* .wave {
   width: 100%;
   line-height: 0;
@@ -1564,8 +1615,9 @@ h1 {
 .contact-section {
   background: #efefef;
   position: relative;
-  padding: 80px 0 0 0;
+  padding: 110px 0 0 0;
   min-height: 520px;
+  padding-bottom: 90px;
 }
 .contact-flex {
   margin: 0 auto;
