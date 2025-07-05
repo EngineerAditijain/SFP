@@ -673,7 +673,6 @@ h1 {
   .carousel-img {
     min-width: 240px;
     max-width: 98vw;
-    height: 500px;
   }
 
   .gallery-header h2 {
@@ -703,7 +702,9 @@ h1 {
   #galleryCarousel::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
   }
-
+  .carousel-img .hover-overlay {
+    display: none !important;
+  }
   .logo img {
     height: auto;
     width: 80px;
