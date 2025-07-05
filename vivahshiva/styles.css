@@ -1766,6 +1766,7 @@ h1 {
   }
   .contact-buttons {
     justify-content: center;
+    align-items: center;
     flex-direction: column;
     flex-wrap: wrap;
   }
