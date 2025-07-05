@@ -808,6 +808,15 @@ h1 {
   .carousel-img {
     min-width: 96vw !important;
     max-width: 98vw !important;
+    filter: brightness(0.5);
+  }
+  .carousel-img img {
+    filter: brightness(1);
+    transition: none !important;
+  }
+  .carousel-img:hover img {
+    transform: none !important;
+    filter: brightness(1);
   }
 }
 
