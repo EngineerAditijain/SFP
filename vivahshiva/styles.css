@@ -625,14 +625,18 @@ h1 {
   object-fit: cover;
   object-position: top;
   display: block;
+  will-change: transform, filter;
   transition: transform 0.6s ease, filter 0.4s ease;
   transform-style: preserve-3d;
   filter: brightness(0.5);
 }
 
 .carousel-img:hover img {
-  transform: scale(1.05) rotateY(4deg) rotateX(2deg) translateZ(10px);
+  transform: scale(1.03) rotateY(2deg) rotateX(1deg); /* reduce distortion */
   filter: brightness(1) saturate(1.15);
+}
+.carousel-img img {
+  transition: transform 0.3s ease, filter 0.3s ease; /* reduced from 0.6s */
 }
 
 .hover-overlay {
@@ -657,6 +661,7 @@ h1 {
 
 .carousel-img:hover .hover-overlay {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .hover-overlay h3 {
@@ -808,15 +813,15 @@ h1 {
   .carousel-img {
     min-width: 96vw !important;
     max-width: 98vw !important;
-    filter: brightness(0.5);
+    filter: brightness(1);
   }
   .carousel-img img {
-    filter: brightness(1);
+    filter: brightness(1) saturate(1.15);
     transition: none !important;
   }
   .carousel-img:hover img {
     transform: none !important;
-    filter: brightness(1);
+    filter: brightness(1) saturate(1.15);
   }
 }
 
@@ -1348,7 +1353,7 @@ h1 {
 }
 .reviews-info {
   flex: 1.1;
-  font-family: "Playfair Display", sans-serif;
+
   min-width: 280px;
   color: #fff;
   padding-top: 0; /* Make sure this is 0 */
@@ -1364,11 +1369,11 @@ h1 {
   line-height: 1.13;
   margin-bottom: 30px;
   color: #fff;
+  font-family: "Playfair Display", sans-serif;
 }
 .reviews-info .star {
   color: #ffa886;
-  font-size: 1.1em;
-  vertical-align: -2px;
+  font-size: 0.85em;
 }
 .reviews-info p {
   font-size: 1.12rem;
@@ -1423,7 +1428,6 @@ h1 {
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid #ffa886;
-  margin-bottom: 15px;
 }
 .reviewer-name {
   font-size: 1.35rem;
@@ -1452,6 +1456,10 @@ h1 {
   font-size: 1.06rem;
   color: #e7e7e7;
   margin-top: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 @media (max-width: 500px) {
@@ -1514,7 +1522,7 @@ h1 {
     max-width: 400px;
     margin: 0 auto;
     flex: 0 0 400px;
-    gap: 20px;
+    gap: 5px;
     align-items: center;
   }
   .review-text {

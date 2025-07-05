@@ -221,7 +221,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const slides = Array.from(carousel.children);
 
     // Clone slides for seamless looping
-    slides.forEach(slide => carousel.appendChild(slide.cloneNode(true)));
+    // Clone slides without cloning images (or clone just once and cache)
+    const clonedSlides = slides.map(slide => slide.cloneNode(true));
+    clonedSlides.forEach(clone => {
+        const img = clone.querySelector('img');
+        if (img) {
+            img.loading = 'lazy'; // already loaded? Browser skips
+        }
+        carousel.appendChild(clone);
+    });
+
 
     let currentIndex = 0;
     const slideWidth = slides[0].offsetWidth + 18;
@@ -390,4 +399,21 @@ document.getElementById('quoteForm').addEventListener('submit', function (e) {
         `Name: ${name}\nPhone: ${phone}\nEmail: ${email}\nService: ${dropdown}\nLocation: ${location}`
     );
     window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const video = document.getElementById("bwVideo");
+
+    if (video) {
+        // Force loop if browser doesn't respect attribute
+        video.addEventListener("ended", function () {
+            video.currentTime = 0;
+            video.play();
+        });
+
+        // Try to play again in case autoplay is blocked
+        video.play().catch((e) => {
+            console.warn("Video autoplay blocked:", e);
+        });
+    }
 });
