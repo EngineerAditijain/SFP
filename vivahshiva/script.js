@@ -209,10 +209,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const carousel = document.getElementById("galleryCarousel");
     if (!carousel) return;
 
-    const slides = Array.from(carousel.children);
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const originalSlides = Array.from(carousel.children);
 
-    // Common setup
+    // Style setup
     carousel.style.display = "flex";
     carousel.style.overflowX = "auto";
     carousel.style.scrollSnapType = "x mandatory";
@@ -223,41 +223,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const style = document.createElement("style");
     style.innerHTML = `
-        #galleryCarousel::-webkit-scrollbar {
-            display: none;
-        }
-    `;
+      #galleryCarousel::-webkit-scrollbar {
+          display: none;
+      }
+  `;
     document.head.appendChild(style);
 
-    slides.forEach((slide) => {
+    // Clone for looping: prepend and append
+    const cloneBefore = originalSlides.map(slide => slide.cloneNode(true));
+    const cloneAfter = originalSlides.map(slide => slide.cloneNode(true));
+
+    cloneBefore.forEach(clone => carousel.insertBefore(clone, carousel.firstChild));
+    cloneAfter.forEach(clone => carousel.appendChild(clone));
+
+    // Recalculate all slides after cloning
+    const allSlides = Array.from(carousel.children);
+    allSlides.forEach(slide => {
         slide.style.scrollSnapAlign = "start";
         slide.style.flex = "0 0 auto";
     });
 
-    const clonedSlides = slides.map(slide => slide.cloneNode(true));
-    clonedSlides.forEach(clone => {
-        const img = clone.querySelector('img');
-        if (img) img.loading = 'lazy';
-        carousel.appendChild(clone);
-    });
+    // Scroll to first real slide to avoid starting on clones
+    const realStartIndex = originalSlides.length;
+    const slideWidth = originalSlides[0].offsetWidth + 18;
+    carousel.scrollLeft = realStartIndex * slideWidth;
 
-    let currentIndex = 0;
-    const slideWidth = slides[0].offsetWidth + 18;
-    const totalSlides = slides.length;
     let intervalId;
     let resumeTimeout;
 
     function slideOnce() {
-        currentIndex++;
+        const currentScroll = carousel.scrollLeft;
+        const newScroll = currentScroll + slideWidth;
 
-        if (currentIndex >= totalSlides) {
-            currentIndex = 0;
-            carousel.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-            carousel.scrollTo({
-                left: currentIndex * slideWidth,
-                behavior: "smooth",
-            });
+        carousel.scrollTo({
+            left: newScroll,
+            behavior: "smooth"
+        });
+
+        // Reset when reaching end of real slides
+        const maxScroll = (realStartIndex + originalSlides.length) * slideWidth;
+        if (newScroll >= maxScroll) {
+            setTimeout(() => {
+                // Instantly jump to start of real slides
+                carousel.scrollTo({ left: realStartIndex * slideWidth, behavior: "auto" });
+            }, 500); // match scroll animation duration
         }
     }
 
@@ -276,11 +285,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3000); // delay after interaction
     }
 
-    // Start auto-slide on all devices
+    // Start auto-slide
     startAutoSlide();
 
     if (isMobile) {
-        // Only mobile: pause/resume auto-scroll on interaction
+        // ✅ Mobile: allow manual scroll + auto scroll
         carousel.addEventListener("touchstart", stopAutoSlide, { passive: true });
         carousel.addEventListener("touchend", resetAutoSlideAfterDelay, { passive: true });
         carousel.addEventListener("scroll", () => {
@@ -288,11 +297,26 @@ document.addEventListener("DOMContentLoaded", function () {
             resetAutoSlideAfterDelay();
         });
     } else {
-        // Only desktop: pause on hover
+        // ✅ Desktop: disable manual scroll completely
         carousel.addEventListener("mouseenter", stopAutoSlide);
         carousel.addEventListener("mouseleave", startAutoSlide);
+
+        // Prevent mouse wheel scroll
+        carousel.addEventListener("wheel", (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Optional: prevent mouse drag scroll (if using pointer/mouse dragging)
+        carousel.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+        });
+
+        // Remove keyboard navigation as well
+        carousel.setAttribute("tabindex", "-1");
     }
+
 });
+
 
 
 

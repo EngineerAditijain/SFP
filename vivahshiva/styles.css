@@ -5,7 +5,7 @@ html {
   font-family: "DM Sans", sans-serif;
   background: #181818;
   color: #fff;
-  scroll-behavior: smooth;
+  scroll-behavior: inherit;
   width: 100vw;
   height: 100vh;
 }
