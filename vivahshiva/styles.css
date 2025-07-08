@@ -204,11 +204,6 @@ header {
     flex-direction: column;
     top: 0px;
   }
-  .hero-bg {
-    background-position: top;
-    height: 130vh;
-    transform: scale(1) translate3d(0, 0, 0);
-  }
 }
 
 .hero-overlay {
@@ -762,6 +757,24 @@ h1 {
     font-size: 0.98rem;
     padding: 6px 13px;
     margin-left: 8px;
+  }
+  .carousel-img::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 40%),
+      radial-gradient(
+        ellipse at bottom left,
+        rgba(0, 0, 0, 0.4),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgba(0, 0, 0, 0.4),
+        transparent 70%
+      );
   }
 }
 

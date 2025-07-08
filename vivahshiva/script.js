@@ -209,56 +209,55 @@ document.addEventListener("DOMContentLoaded", function () {
     const carousel = document.getElementById("galleryCarousel");
     if (!carousel) return;
 
-    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-
-    if (!isDesktop) {
-        // On phones: make carousel manually scrollable
-        carousel.style.overflowX = "auto";
-        carousel.style.display = "flex";
-        carousel.style.scrollSnapType = "x mandatory";
-        Array.from(carousel.children).forEach((slide) => {
-            slide.style.scrollSnapAlign = "start";
-            slide.style.flex = "0 0 auto";
-        });
-        return; // Do NOT proceed with auto-scroll on phones
-    }
-
-    // Desktop: Enable auto-scrolling
     const slides = Array.from(carousel.children);
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-    // Clone slides for seamless looping
-    // Clone slides without cloning images (or clone just once and cache)
+    // Common setup
+    carousel.style.display = "flex";
+    carousel.style.overflowX = "auto";
+    carousel.style.scrollSnapType = "x mandatory";
+    carousel.style.scrollBehavior = "smooth";
+    carousel.style.webkitOverflowScrolling = "touch";
+    carousel.style.msOverflowStyle = "none";
+    carousel.style.scrollbarWidth = "none";
+
+    const style = document.createElement("style");
+    style.innerHTML = `
+        #galleryCarousel::-webkit-scrollbar {
+            display: none;
+        }
+    `;
+    document.head.appendChild(style);
+
+    slides.forEach((slide) => {
+        slide.style.scrollSnapAlign = "start";
+        slide.style.flex = "0 0 auto";
+    });
+
     const clonedSlides = slides.map(slide => slide.cloneNode(true));
     clonedSlides.forEach(clone => {
         const img = clone.querySelector('img');
-        if (img) {
-            img.loading = 'lazy'; // already loaded? Browser skips
-        }
+        if (img) img.loading = 'lazy';
         carousel.appendChild(clone);
     });
-
 
     let currentIndex = 0;
     const slideWidth = slides[0].offsetWidth + 18;
     const totalSlides = slides.length;
-
     let intervalId;
+    let resumeTimeout;
 
     function slideOnce() {
         currentIndex++;
 
         if (currentIndex >= totalSlides) {
-            carousel.style.transition = 'none';
-            carousel.style.transform = `translateX(0px)`;
-            currentIndex = 1;
-
-            // Force reflow to allow transition to work again
-            void carousel.offsetWidth;
-
-            carousel.style.transition = 'transform 0.5s ease-in-out';
-            carousel.style.transform = `translateX(-${slideWidth}px)`;
+            currentIndex = 0;
+            carousel.scrollTo({ left: 0, behavior: "smooth" });
         } else {
-            carousel.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+            carousel.scrollTo({
+                left: currentIndex * slideWidth,
+                behavior: "smooth",
+            });
         }
     }
 
@@ -270,11 +269,32 @@ document.addEventListener("DOMContentLoaded", function () {
         clearInterval(intervalId);
     }
 
+    function resetAutoSlideAfterDelay() {
+        clearTimeout(resumeTimeout);
+        resumeTimeout = setTimeout(() => {
+            startAutoSlide();
+        }, 3000); // delay after interaction
+    }
+
+    // Start auto-slide on all devices
     startAutoSlide();
 
-    carousel.addEventListener('mouseenter', stopAutoSlide);
-    carousel.addEventListener('mouseleave', startAutoSlide);
+    if (isMobile) {
+        // Only mobile: pause/resume auto-scroll on interaction
+        carousel.addEventListener("touchstart", stopAutoSlide, { passive: true });
+        carousel.addEventListener("touchend", resetAutoSlideAfterDelay, { passive: true });
+        carousel.addEventListener("scroll", () => {
+            stopAutoSlide();
+            resetAutoSlideAfterDelay();
+        });
+    } else {
+        // Only desktop: pause on hover
+        carousel.addEventListener("mouseenter", stopAutoSlide);
+        carousel.addEventListener("mouseleave", startAutoSlide);
+    }
 });
+
+
 
 
 function updateAboutTitle() {
